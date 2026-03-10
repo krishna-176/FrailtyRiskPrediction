@@ -167,3 +167,8 @@ Complete all Dockerfiles, finalize Docker Compose, verify full-stack startup.
 - Add health-check `depends_on` conditions so backend waits for ml-service to be healthy
 - Verify: `docker compose up --build` (from `docker/` dir) starts all 4 services without error
 - Smoke test: `curl http://localhost:8000/health` → 200; `curl http://localhost:8080/actuator/health` → UP; `http://localhost:5173` loads dashboard
+
+### [x] Step: login auth
+<!-- chat-id: 82e6b52d-d4fd-4c25-89cf-6de65b8012ed -->
+
+generate the login dash board that is admin/doctor login and patient login and also create the database for each

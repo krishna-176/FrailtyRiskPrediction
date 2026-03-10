@@ -8,6 +8,10 @@ ml:
   service:
     url: ${ML_SERVICE_URL:http://localhost:8000}
 
+jwt:
+  secret: ${JWT_SECRET:frailty-ai-super-secret-key-32chars-min!!}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
 server:
   port: 8080
 

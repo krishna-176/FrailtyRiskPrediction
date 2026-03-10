@@ -22,6 +22,8 @@ services:
     environment:
       MONGODB_URI: mongodb+srv://krishnakumar176003_db_user:${MONGODB_PASSWORD}@krishna.4r6mwfw.mongodb.net/frailtydb?appName=Krishna&retryWrites=true&w=majority
       ML_SERVICE_URL: http://ml-service:8000
+      JWT_SECRET: ${JWT_SECRET:-frailty-ai-super-secret-key-32chars-min!!}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-86400000}
     depends_on:
       ml-service:
         condition: service_healthy
