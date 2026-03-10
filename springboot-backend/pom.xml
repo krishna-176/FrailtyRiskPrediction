@@ -62,11 +62,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <excludes/>
-                    <jvmArguments>
-                        -Djdk.tls.client.protocols=TLSv1.2,TLSv1.3
-                        -Djdk.tls.acknowledgeCloseNotify=true
-                        -Dio.netty.handler.ssl.noOpenSsl=true
-                    </jvmArguments>
                 </configuration>
             </plugin>
         </plugins>
