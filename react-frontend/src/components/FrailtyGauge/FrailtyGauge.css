@@ -1,0 +1,74 @@
+.frailty-gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.gauge-container {
+  position: relative;
+  width: 100%;
+}
+
+.gauge-center {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.gauge-score {
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.gauge-max {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.gauge-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.gauge-risk-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.gauge-frail-badge {
+  font-size: 0.85rem;
+}
+
+.gauge-probability {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.gauge-scale {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  align-items: center;
+}
+
+.gauge-scale-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.gauge-scale-dot.active {
+  transform: scale(1.5);
+  box-shadow: 0 0 6px rgba(0,0,0,0.25);
+}

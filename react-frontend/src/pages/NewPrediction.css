@@ -1,0 +1,29 @@
+.predict-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.predict-form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.predict-results-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 24px;
+}
+
+@media (max-width: 1100px) {
+  .predict-layout {
+    grid-template-columns: 1fr;
+  }
+  .predict-results-col {
+    position: static;
+  }
+}
