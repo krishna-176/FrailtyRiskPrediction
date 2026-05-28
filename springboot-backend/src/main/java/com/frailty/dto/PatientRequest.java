@@ -11,6 +11,9 @@ import lombok.Data;
 @Data
 public class PatientRequest {
 
+    // Optional: links this patient record to a user login account
+    private String userId;
+
     @NotBlank
     private String name;
 

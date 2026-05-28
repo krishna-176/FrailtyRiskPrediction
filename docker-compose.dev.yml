@@ -1,0 +1,99 @@
+# ── docker-compose.dev.yml ─────────────────────────────────────────────────
+# Unified local development environment.
+# Usage:   docker-compose -f docker-compose.dev.yml up --build
+#
+# Services launched:
+#   1. mongodb      — local Mongo DB (data persisted in Docker volume)
+#   2. ml-service   — Python FastAPI prediction engine  (port 8000)
+#   3. backend      — Spring Boot API                   (port 8080)
+#   4. frontend     — React / Vite dev server           (port 5173)
+# ───────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # ── 1. MongoDB ─────────────────────────────────────────────────────────
+  mongodb:
+    image: mongo:7.0
+    container_name: frailty-mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-frailtydev}
+      MONGO_INITDB_DATABASE: frailtydb
+    volumes:
+      - mongo-data:/data/db   # data survives container restarts
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # ── 2. ML Service (FastAPI) ────────────────────────────────────────────
+  ml-service:
+    build:
+      context: ../ml-service
+      dockerfile: Dockerfile
+    container_name: frailty-ml
+    ports:
+      - "8000:8000"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}   # set in .env or export before running
+    volumes:
+      - ../ml-service:/app   # hot-reload source changes without rebuild
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 90s     # model loading takes time
+
+  # ── 3. Spring Boot Backend ─────────────────────────────────────────────
+  backend:
+    build:
+      context: ../springboot-backend
+      dockerfile: Dockerfile
+    container_name: frailty-backend
+    ports:
+      - "8080:8080"
+    environment:
+      # Use the local Mongo instead of Atlas for development
+      MONGODB_URI: mongodb://${MONGO_USER:-admin}:${MONGO_PASSWORD:-frailtydev}@mongodb:27017/frailtydb?authSource=admin
+      ML_SERVICE_URL: http://ml-service:8000
+      JWT_SECRET: ${JWT_SECRET:-frailty-dev-secret-key-at-least-32-chars!!}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-86400000}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      ml-service:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # ── 4. React Frontend (Vite dev server) ────────────────────────────────
+  frontend:
+    build:
+      context: ../react-frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8080
+    container_name: frailty-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+# ── Volumes ────────────────────────────────────────────────────────────────
+volumes:
+  mongo-data:
+    driver: local

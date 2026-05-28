@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class PatientResponse {
 
     private String id;
+    private String userId;
     private String name;
     private Double age;
     private Integer gender;

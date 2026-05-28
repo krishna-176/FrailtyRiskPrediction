@@ -1,0 +1,639 @@
+/* ================================================================
+   PatientDashboard.css — Premium Health Profile Redesign
+   ================================================================ */
+
+/* ── Page wrapper ────────────────────────────────────────────── */
+.pd-root {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── Page title ──────────────────────────────────────────────── */
+.pd-page-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 60%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.pd-page-icon {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+  -webkit-text-fill-color: initial;
+}
+
+.pd-page-subtitle {
+  font-size: 0.88rem;
+  color: #94a3b8;
+  padding-left: 2px;
+  margin-bottom: 8px;
+}
+
+/* ── Profile Hero Card ───────────────────────────────────────── */
+.pd-hero {
+  background: #fff;
+  border-radius: 22px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 28px rgba(99, 102, 241, 0.07);
+  overflow: hidden;
+  position: relative;
+}
+
+.pd-hero-banner {
+  height: 72px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.pd-hero-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+}
+
+.pd-hero-body {
+  padding: 0 28px 24px;
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.pd-avatar-wrap {
+  margin-top: -30px;
+  flex-shrink: 0;
+}
+
+.pd-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: 4px solid #fff;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.pd-hero-info {
+  flex: 1;
+  padding-top: 10px;
+  min-width: 0;
+}
+
+.pd-hero-name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #1e293b;
+  letter-spacing: -0.3px;
+}
+
+.pd-hero-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(99, 102, 241, 0.08);
+  color: #6366f1;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-top: 4px;
+  margin-bottom: 2px;
+}
+
+.pd-hero-email {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+/* ── Latest Status Pill ──────────────────────────────────────── */
+.pd-status-pill {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 22px;
+  border-radius: 16px;
+  border: 1.5px solid transparent;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+
+.pd-status-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.pd-status-pill.healthy {
+  background: rgba(16, 185, 129, 0.07);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.pd-status-pill.frail {
+  background: rgba(239, 68, 68, 0.07);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.pd-status-label-sm {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #94a3b8;
+}
+
+.pd-status-value {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.pd-status-value.healthy { color: #10b981; }
+.pd-status-value.frail   { color: #ef4444; }
+
+.pd-status-score {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+/* ── Frailty Score Visual ────────────────────────────────────── */
+.pd-score-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.pd-score-seg {
+  height: 6px;
+  border-radius: 3px;
+  background: #e2e8f0;
+  transition: background 0.4s ease;
+}
+
+.pd-score-seg.active-healthy { background: #10b981; }
+.pd-score-seg.active-frail   { background: #ef4444; }
+.pd-score-seg.active-warn    { background: #f59e0b; }
+
+/* ── Loading / Not linked states ─────────────────────────────── */
+.pd-state-card {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+  padding: 56px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.pd-state-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  margin-bottom: 4px;
+}
+
+.pd-state-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.pd-state-sub {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+.pd-username-chip {
+  display: inline-block;
+  background: rgba(99, 102, 241, 0.08);
+  color: #6366f1;
+  border: 1px solid rgba(99,102,241,0.2);
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  margin-top: 4px;
+}
+
+.pd-loading-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(99, 102, 241, 0.15);
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: pd-spin 0.7s linear infinite;
+}
+
+@keyframes pd-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Section Heading ─────────────────────────────────────────── */
+.pd-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.pd-section-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  box-shadow: 0 3px 10px rgba(99, 102, 241, 0.28);
+}
+
+.pd-section-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #1e293b;
+  letter-spacing: -0.2px;
+}
+
+.pd-section-badge {
+  margin-left: auto;
+  background: rgba(99,102,241,0.08);
+  color: #6366f1;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* ── Medical Info Card ───────────────────────────────────────── */
+.pd-medical-card {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+  padding: 22px 24px;
+}
+
+.pd-vitals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.pd-vital-card {
+  background: #f8fafc;
+  border: 1.5px solid #f1f5f9;
+  border-radius: 14px;
+  padding: 14px 16px;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.pd-vital-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.pd-vital-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.1);
+  border-color: rgba(99, 102, 241, 0.2);
+  background: #fff;
+}
+
+.pd-vital-card:hover::before {
+  opacity: 1;
+}
+
+.pd-vital-icon {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.pd-vital-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+
+.pd-vital-value {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1e293b;
+  letter-spacing: -0.2px;
+}
+
+/* ── SDoH Card ───────────────────────────────────────────────── */
+.pd-sdoh-card {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+  padding: 22px 24px;
+}
+
+.pd-sdoh-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.pd-sdoh-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #f1f5f9;
+  transition: all 0.2s ease;
+}
+
+.pd-sdoh-item:hover {
+  background: #fff;
+  border-color: rgba(99,102,241,0.15);
+  box-shadow: 0 4px 12px rgba(99,102,241,0.07);
+}
+
+.pd-sdoh-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #94a3b8;
+}
+
+.pd-sdoh-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+/* ── History Card ────────────────────────────────────────────── */
+.pd-history-card {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+.pd-history-card-inner {
+  padding: 22px 24px 0;
+}
+
+/* History table */
+.pd-history-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.88rem;
+}
+
+.pd-history-table th {
+  text-align: left;
+  padding: 11px 20px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #94a3b8;
+  background: #f8fafc;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+  white-space: nowrap;
+}
+
+.pd-history-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid #f8fafc;
+  vertical-align: middle;
+  color: #334155;
+}
+
+.pd-history-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.pd-history-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.pd-history-table tbody tr:hover td {
+  background: #fafaff;
+}
+
+.pd-history-table tbody tr:first-child td {
+  font-weight: 600;
+}
+
+/* Score bar in table */
+.pd-score-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pd-score-num {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #1e293b;
+  min-width: 30px;
+}
+
+.pd-score-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 3px;
+  overflow: hidden;
+  max-width: 80px;
+}
+
+.pd-score-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.pd-score-bar-fill.healthy { background: linear-gradient(90deg, #10b981, #34d399); }
+.pd-score-bar-fill.warn    { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.pd-score-bar-fill.frail   { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+/* Status pill in table */
+.pd-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.pd-status-chip.healthy {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.pd-status-chip.frail {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+/* Probability bar */
+.pd-prob-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pd-prob-text {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #475569;
+  min-width: 42px;
+}
+
+.pd-prob-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 3px;
+  overflow: hidden;
+  max-width: 80px;
+}
+
+.pd-prob-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.pd-prob-bar-fill.low  { background: linear-gradient(90deg, #10b981, #34d399); }
+.pd-prob-bar-fill.med  { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.pd-prob-bar-fill.high { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+/* ── Notice Banner ───────────────────────────────────────────── */
+.pd-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(99, 102, 241, 0.05);
+  border: 1px solid rgba(99, 102, 241, 0.12);
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: 0.84rem;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.pd-notice-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  margin-top: 2px;
+}
+
+/* ── Empty state inside cards ────────────────────────────────── */
+.pd-inner-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 40px 20px;
+  color: #94a3b8;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.pd-inner-empty-icon {
+  font-size: 2rem;
+  margin-bottom: 4px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .pd-hero-body {
+    padding: 0 16px 20px;
+  }
+
+  .pd-status-pill {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .pd-vitals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pd-sdoh-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pd-history-table {
+    min-width: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pd-vitals-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

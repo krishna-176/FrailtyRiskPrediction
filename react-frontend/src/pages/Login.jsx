@@ -23,8 +23,10 @@ export default function Login() {
     }
     setLoading(true)
     try {
-      await login(form.username, form.password)
-      navigate('/')
+      const userData = await login(form.username, form.password)
+      if (userData.role === 'ADMIN') navigate('/admin')
+      else if (userData.role === 'PATIENT') navigate('/my-profile')
+      else navigate('/')
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid username or password')
     } finally {
@@ -77,8 +79,8 @@ export default function Login() {
         </form>
 
         <p className="auth-footer">
-          Don&apos;t have an account?{' '}
-          <Link to="/register">Register</Link>
+          New patient?{' '}
+          <Link to="/register">Create account</Link>
         </p>
       </div>
     </div>

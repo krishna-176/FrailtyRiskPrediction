@@ -5,6 +5,7 @@ import com.frailty.dto.PatientResponse;
 import com.frailty.service.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,13 @@ public class PatientController {
     @GetMapping
     public Flux<PatientResponse> getAllPatients() {
         return patientService.getAllPatients();
+    }
+
+    /** Returns the patient record linked to the currently logged-in user account */
+    @GetMapping("/me")
+    public Mono<PatientResponse> getMyPatientRecord(Authentication authentication) {
+        String userId = (String) authentication.getDetails();
+        return patientService.getPatientByUserId(userId);
     }
 
     @GetMapping("/{id}")

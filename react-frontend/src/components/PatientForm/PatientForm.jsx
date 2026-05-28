@@ -5,7 +5,6 @@ const COMMUNITY_TYPES = ['Urban', 'Suburban', 'Small Town', 'Rural', 'Frontier']
 
 const CLINICAL_FIELDS = [
   { name: 'age', label: 'Age (years)', type: 'number', min: 50, max: 90, step: 1, placeholder: '65' },
-  { name: 'gender', label: 'Gender (0=Female, 1=Male)', type: 'number', min: 0, max: 1, step: 1, placeholder: '0' },
   { name: 'bmi', label: 'BMI', type: 'number', min: 10, max: 80, step: 0.1, placeholder: '25.0' },
   { name: 'hemoglobin', label: 'Hemoglobin (g/dL)', type: 'number', min: 5, max: 20, step: 0.1, placeholder: '13.0' },
   { name: 'hematocrit', label: 'Hematocrit (%)', type: 'number', min: 10, max: 60, step: 0.1, placeholder: '40.0' },
@@ -28,7 +27,7 @@ const SDOH_FIELDS = [
 ]
 
 const DEFAULT_VALUES = {
-  age: '', gender: '', bmi: '', hemoglobin: '', hematocrit: '',
+  age: '', gender: '0', bmi: '', hemoglobin: '', hematocrit: '',
   platelet_count: '', num_comorbidities: '', systolic_bp: '', creatinine: '', albumin: '',
   community_type: 'Urban',
   median_income: '', poverty_rate: '', education_bachelors_pct: '',
@@ -98,7 +97,21 @@ export default function PatientForm({ onSubmit, loading }) {
     <form className="patient-form" onSubmit={handleSubmit}>
       <div className="form-section">
         <h3 className="form-section-title">Clinical Features</h3>
-        <div className="grid-2">{CLINICAL_FIELDS.map(renderField)}</div>
+        <div className="grid-2">
+          <div className="form-group">
+            <label className="form-label">Gender</label>
+            <select
+              className="form-input"
+              name="gender"
+              value={values.gender}
+              onChange={handleChange}
+            >
+              <option value="0">Female</option>
+              <option value="1">Male</option>
+            </select>
+          </div>
+          {CLINICAL_FIELDS.map(renderField)}
+        </div>
       </div>
 
       <div className="form-section">

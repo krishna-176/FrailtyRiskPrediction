@@ -32,4 +32,5 @@ public class Prediction {
     private List<RecommendationDto> recommendations;
     private String modelVersion;
     private LocalDateTime timestamp;
+    private Boolean aiPowered;
 }

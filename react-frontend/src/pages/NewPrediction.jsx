@@ -1,40 +1,45 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { getPatients, predict } from '../services/api.js'
-import PatientForm from '../components/PatientForm/PatientForm.jsx'
 import FrailtyGauge from '../components/FrailtyGauge/FrailtyGauge.jsx'
 import ShapChart from '../components/ShapChart/ShapChart.jsx'
 import RecommendationsPanel from '../components/RecommendationsPanel/RecommendationsPanel.jsx'
 import './NewPrediction.css'
 
+const GENDER_LABEL = { 0: 'Female', 1: 'Male' }
+
 export default function NewPrediction() {
-  const [patients, setPatients] = useState([])
   const [selectedPatientId, setSelectedPatientId] = useState('')
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [loadingPatients, setLoadingPatients] = useState(true)
 
-  useEffect(() => {
-    getPatients(0)
-      .then((res) => {
-        const list = res.data.content ?? (Array.isArray(res.data) ? res.data : [])
-        setPatients(list)
-        if (list.length > 0) setSelectedPatientId(list[0].id || list[0]._id || '')
-      })
-      .catch(() => {})
-      .finally(() => setLoadingPatients(false))
-  }, [])
+  // ── React Query: patient list is cached globally ──
+  const { data: patientData, isLoading: loadingPatients } = useQuery({
+    queryKey: ['patients', 0],
+    queryFn: () => getPatients(0).then(r => r.data),
+    onSuccess: (data) => {
+      const list = data?.content ?? (Array.isArray(data) ? data : [])
+      if (list.length > 0 && !selectedPatientId) {
+        setSelectedPatientId(list[0].id || list[0]._id || '')
+      }
+    },
+  })
+  const patients = patientData?.content ?? (Array.isArray(patientData) ? patientData : [])
 
-  const handleSubmit = async (features) => {
-    if (!selectedPatientId) {
-      setError('Please select a patient first.')
-      return
-    }
+  // Set default selection when list first loads
+  if (patients.length > 0 && !selectedPatientId) {
+    setSelectedPatientId(patients[0].id || patients[0]._id || '')
+  }
+
+
+  const handlePredict = async () => {
+    if (!selectedPatientId) return
     setLoading(true)
     setError(null)
     setResult(null)
     try {
-      const res = await predict(selectedPatientId, features)
+      const res = await predict(selectedPatientId)
       setResult(res.data)
     } catch (err) {
       setError(err?.response?.data?.message || err?.message || 'Prediction failed.')
@@ -43,16 +48,27 @@ export default function NewPrediction() {
     }
   }
 
+  const selectedPatient = patients.find((p) => (p.id || p._id) === selectedPatientId)
+
   return (
     <div>
-      <h1 className="page-title">New Frailty Prediction</h1>
+      <div className="premium-page-header">
+        <h1 className="premium-page-title">
+          <span className="premium-icon">✨</span>
+          New Frailty Prediction
+        </h1>
+        <p className="premium-page-subtitle">
+          Select a patient below to instantly generate a comprehensive, AI-powered frailty analysis.
+        </p>
+      </div>
 
       {error && <div className="alert alert-error">{error}</div>}
 
-      <div className="predict-layout">
+      <div className={`predict-layout ${result ? 'has-results' : ''}`}>
         <div className="predict-form-col">
-          <div className="card" style={{ marginBottom: '16px' }}>
+          <div className="card">
             <div className="card-title">Select Patient</div>
+
             {loadingPatients ? (
               <div className="loading">Loading patients...</div>
             ) : patients.length === 0 ? (
@@ -60,24 +76,40 @@ export default function NewPrediction() {
                 No patients found. <a href="/patients">Create a patient</a> first.
               </div>
             ) : (
-              <div className="form-group">
-                <label className="form-label">Patient</label>
-                <select
-                  className="form-input"
-                  value={selectedPatientId}
-                  onChange={(e) => setSelectedPatientId(e.target.value)}
+              <>
+                <div className="form-group">
+                  <label className="form-label">Patient</label>
+                  <select
+                    className="form-input"
+                    value={selectedPatientId}
+                    onChange={(e) => { setSelectedPatientId(e.target.value); setResult(null) }}
+                  >
+                    {patients.map((pt) => (
+                      <option key={pt.id || pt._id} value={pt.id || pt._id}>
+                        {pt.name} — Age {pt.age}, {GENDER_LABEL[pt.gender] ?? pt.gender}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {selectedPatient && (
+                  <div className="selected-patient-info">
+                    <span className="info-label">Patient ID:</span>
+                    <span className="info-value mono">{selectedPatientId}</span>
+                  </div>
+                )}
+
+                <button
+                  className="btn btn-primary form-submit-btn"
+                  onClick={handlePredict}
+                  disabled={loading || !selectedPatientId}
+                  style={{ marginTop: '20px', width: '100%' }}
                 >
-                  {patients.map((p) => (
-                    <option key={p.id || p._id} value={p.id || p._id}>
-                      {p.name} (ID: {p.id || p._id})
-                    </option>
-                  ))}
-                </select>
-              </div>
+                  {loading ? 'Predicting...' : '🔬 Predict Frailty Risk'}
+                </button>
+              </>
             )}
           </div>
-
-          <PatientForm onSubmit={handleSubmit} loading={loading} />
         </div>
 
         {result && (
@@ -88,7 +120,10 @@ export default function NewPrediction() {
               probability={result.probability}
             />
             <ShapChart shapValues={result.shapValues ?? result.shap_values ?? {}} />
-            <RecommendationsPanel recommendations={result.recommendations ?? []} />
+            <RecommendationsPanel
+              recommendations={result.recommendations ?? []}
+              aiPowered={result.aiPowered ?? result.ai_powered ?? false}
+            />
           </div>
         )}
       </div>

@@ -34,7 +34,6 @@ body {
 }
 
 #root {
-  display: flex;
   min-height: 100vh;
 }
 
@@ -51,6 +50,64 @@ button {
 .layout {
   display: flex;
   width: 100%;
+}
+
+.mobile-topbar {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 52px;
+  background: #1a1f2e;
+  z-index: 150;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.mobile-brand {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+}
+
+.hamburger-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.hamburger-btn span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 190;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.sidebar-overlay--visible {
+  opacity: 1;
 }
 
 .main-content {
@@ -288,11 +345,220 @@ button {
 }
 
 @media (max-width: 768px) {
+  .mobile-topbar {
+    display: flex;
+  }
+
+  .sidebar-overlay {
+    display: block;
+  }
+
   .main-content {
     margin-left: 0;
     padding: 16px;
+    padding-top: 68px;
   }
+
   .grid-2 {
     grid-template-columns: 1fr;
   }
+
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tab-bar {
+    flex-wrap: wrap;
+  }
+
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .auth-creds-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tab-bar { display: flex; gap: 8px; margin-bottom: 20px; }
+.tab-btn { padding: 8px 20px; border: 2px solid var(--color-border); border-radius: var(--border-radius); background: var(--color-surface); color: var(--color-text-secondary); font-size: 0.875rem; font-weight: 500; transition: all 0.15s; }
+.tab-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.tab-btn--active { border-color: var(--color-primary); background: var(--color-primary); color: #fff; }
+
+.admin-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 20px; align-items: start; }
+@media (max-width: 900px) { .admin-grid { grid-template-columns: 1fr; } }
+
+.badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+.badge-admin  { background: #fce8e6; color: #c5221f; }
+.badge-doctor { background: #e8f0fe; color: #1a73e8; }
+.badge-patient { background: #e6f4ea; color: #137333; }
+
+.btn-sm { padding: 4px 10px; font-size: 0.8rem; }
+.btn-danger { background: var(--color-danger); color: #fff; border: none; border-radius: var(--border-radius); padding: 6px 14px; }
+.btn-danger:hover { background: #c5221f; }
+
+.alert-success { background: #e6f4ea; color: #137333; border: 1px solid #b7dfbf; border-radius: var(--border-radius); padding: 10px 14px; margin-bottom: 12px; font-size: 0.875rem; }
+
+.patient-welcome-card { display: flex; align-items: center; gap: 20px; }
+.patient-avatar { font-size: 3rem; }
+.patient-info h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 4px; }
+.patient-meta { font-size: 0.875rem; color: var(--color-text-secondary); }
+
+.empty-state-box { text-align: center; padding: 40px 20px; color: var(--color-text-secondary); }
+.empty-icon { font-size: 3rem; display: block; margin-bottom: 12px; }
+.empty-sub { font-size: 0.8rem; margin-top: 6px; }
+
+.patient-notice { display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; color: var(--color-text-secondary); background: #f8fafc; }
+
+.page {
+  padding: 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 20px;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.data-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.data-table tr:hover td {
+  background: #f8faff;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.predict-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.predict-form-col {
+  min-width: 0;
+}
+
+.predict-results-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+@media (max-width: 1100px) {
+  .predict-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.patient-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 700px) {
+  .patient-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detail-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-section-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  padding: 3px 0;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.detail-row strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.selected-patient-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #f0f4ff;
+  border-radius: var(--border-radius);
+  font-size: 0.82rem;
+}
+
+.info-label {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.info-value {
+  color: var(--color-text);
+}
+
+.mono {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.78rem;
+  word-break: break-all;
 }

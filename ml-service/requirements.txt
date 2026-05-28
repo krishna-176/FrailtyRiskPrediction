@@ -9,3 +9,6 @@ shap>=0.46.0
 joblib>=1.4.2
 matplotlib>=3.9.0
 seaborn>=0.13.2
+openai>=1.50.0
+google-genai>=0.1.0
+python-dotenv>=1.0.0

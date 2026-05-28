@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    environment:
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
@@ -39,10 +41,10 @@ services:
     build:
       context: ../react-frontend
       dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8080
     ports:
       - "5173:5173"
-    environment:
-      VITE_API_URL: http://localhost:8080
     depends_on:
       backend:
         condition: service_healthy

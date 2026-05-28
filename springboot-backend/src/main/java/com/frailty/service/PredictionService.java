@@ -39,6 +39,7 @@ public class PredictionService {
         p.setRecommendations(recommendations);
         p.setModelVersion("1.0.0");
         p.setTimestamp(LocalDateTime.now());
+        p.setAiPowered(Boolean.TRUE.equals(mlResponse.getAiPowered()));
 
         return predictionRepository.save(p);
     }
@@ -64,6 +65,7 @@ public class PredictionService {
         r.setRecommendations(p.getRecommendations());
         r.setModelVersion(p.getModelVersion());
         r.setTimestamp(p.getTimestamp());
+        r.setAiPowered(p.getAiPowered());
         return r;
     }
 }

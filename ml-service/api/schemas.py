@@ -45,3 +45,4 @@ class PredictResponse(BaseModel):
     base_value: float
     top_risk_factors: List[RiskFactor]
     recommendations: List[Recommendation]
+    ai_powered: bool = False

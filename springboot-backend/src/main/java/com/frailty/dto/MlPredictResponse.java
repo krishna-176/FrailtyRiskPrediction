@@ -27,4 +27,7 @@ public class MlPredictResponse {
     private List<RiskFactorDto> topRiskFactors;
 
     private List<RecommendationDto> recommendations;
+
+    @JsonProperty("ai_powered")
+    private Boolean aiPowered = false;
 }

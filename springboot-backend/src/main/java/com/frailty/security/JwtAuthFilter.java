@@ -37,12 +37,14 @@ public class JwtAuthFilter implements WebFilter {
 
         String username = jwtUtil.getUsernameFromToken(token);
         String role = jwtUtil.getRoleFromToken(token);
+        String userId = jwtUtil.parseToken(token).get("userId", String.class);
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 username,
                 null,
                 List.of(new SimpleGrantedAuthority("ROLE_" + role))
         );
+        authentication.setDetails(userId);
 
         return chain.filter(exchange)
                 .contextWrite(ReactiveSecurityContextHolder.withAuthentication(authentication));

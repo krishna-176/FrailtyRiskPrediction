@@ -47,20 +47,28 @@ export default function History() {
 
   return (
     <div>
-      <h1 className="page-title">Prediction History</h1>
+      <div className="premium-page-header" style={{ textAlign: 'left', marginBottom: '32px' }}>
+        <h1 className="premium-page-title" style={{ justifyContent: 'flex-start', fontSize: '2.2rem', marginBottom: '4px' }}>
+          <span className="premium-icon">📋</span>
+          Prediction History
+        </h1>
+        <p className="premium-page-subtitle" style={{ margin: 0 }}>
+          Review and audit past frailty predictions and generated insights.
+        </p>
+      </div>
 
       {error && <div className="alert alert-error">{error}</div>}
 
-      <div className="card" style={{ marginBottom: '16px', padding: '14px 20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <label className="form-label" style={{ marginBottom: 0, whiteSpace: 'nowrap' }}>Filter by patient:</label>
+      <div className="patients-card" style={{ marginBottom: '24px', padding: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+          <label className="form-label" style={{ marginBottom: 0, whiteSpace: 'nowrap', fontSize: '0.85rem', fontWeight: 600 }}>Filter by Patient</label>
           <select
-            className="form-input"
-            style={{ maxWidth: '300px' }}
+            className="premium-search-input"
+            style={{ maxWidth: '320px', flex: '1 1 200px', cursor: 'pointer' }}
             value={filterPatientId}
             onChange={handlePatientFilter}
           >
-            <option value="">All Patients</option>
+            <option value="">All Patients — Show full history view...</option>
             {patients.map((p) => (
               <option key={p.id || p._id} value={p.id || p._id}>
                 {p.name}
@@ -78,6 +86,7 @@ export default function History() {
           totalPages={totalPages}
           currentPage={page}
           onPageChange={(p) => setPage(p)}
+          patientsMap={Object.fromEntries(patients.map((p) => [p.id || p._id, p.name]))}
         />
       )}
     </div>

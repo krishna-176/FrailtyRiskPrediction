@@ -56,8 +56,20 @@ public class PatientService {
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient not found: " + id)));
     }
 
+    public Mono<PatientResponse> getPatientByUserId(String userId) {
+        return patientRepository.findByUserId(userId)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "No patient record linked to this account")))
+                .map(this::toResponse);
+    }
+
+    public Mono<Patient> getPatientEntityByUserId(String userId) {
+        return patientRepository.findByUserId(userId)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND, "No patient record linked to this account")));
+    }
+
     private Patient toEntity(PatientRequest req) {
         Patient p = new Patient();
+        p.setUserId(req.getUserId());
         p.setName(req.getName());
         p.setAge(req.getAge());
         p.setGender(req.getGender());
@@ -84,6 +96,7 @@ public class PatientService {
     private PatientResponse toResponse(Patient p) {
         PatientResponse r = new PatientResponse();
         r.setId(p.getId());
+        r.setUserId(p.getUserId());
         r.setName(p.getName());
         r.setAge(p.getAge());
         r.setGender(p.getGender());

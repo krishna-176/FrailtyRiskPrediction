@@ -57,7 +57,8 @@ def get_recommendations(top_factors: list, raw_values: dict) -> list:
     Returns:
         list of {factor, recommendation, priority} dicts
     """
-    top_feature_names = {f["feature"] for f in top_factors if f["direction"] == "increases_risk"}
+    shap_risk_features = {f["feature"] for f in top_factors if f["direction"] == "increases_risk"}
+    all_shap_features = [f["feature"] for f in top_factors]
 
     recommendations = []
     seen = set()
@@ -67,9 +68,10 @@ def get_recommendations(top_factors: list, raw_values: dict) -> list:
     raw_values_copy = dict(raw_values)
     raw_values_copy["community_type"] = community_encoded
 
+    rule_map = {rule.feature: rule for rule in RULES}
+
+    # First pass: threshold-triggered rules with priority boost for SHAP risk features
     for rule in RULES:
-        if rule.feature not in top_feature_names:
-            continue
         val = raw_values_copy.get(rule.feature)
         if val is None:
             continue
@@ -78,13 +80,35 @@ def get_recommendations(top_factors: list, raw_values: dict) -> list:
             (rule.direction == "low" and val < rule.threshold) or
             (rule.direction == "high" and val > rule.threshold)
         )
-        if triggered and rule.feature not in seen:
-            seen.add(rule.feature)
+
+        if not triggered or rule.feature in seen:
+            continue
+
+        priority = rule.priority
+        if rule.feature in shap_risk_features and priority == "medium":
+            priority = "high"
+
+        seen.add(rule.feature)
+        recommendations.append({
+            "factor": rule.feature,
+            "recommendation": rule.recommendation,
+            "priority": priority,
+        })
+
+    # Second pass: always add recommendations for top SHAP risk features not yet covered
+    if len(recommendations) < 4:
+        for feature in all_shap_features:
+            if feature in seen or feature not in rule_map:
+                continue
+            rule = rule_map[feature]
+            seen.add(feature)
             recommendations.append({
-                "factor": rule.feature,
+                "factor": feature,
                 "recommendation": rule.recommendation,
-                "priority": rule.priority,
+                "priority": "medium",
             })
+            if len(recommendations) >= 5:
+                break
 
     recommendations.sort(key=lambda r: {"high": 0, "medium": 1, "low": 2}[r["priority"]])
-    return recommendations
+    return recommendations[:6]

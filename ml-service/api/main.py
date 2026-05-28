@@ -3,6 +3,9 @@ import os
 import sys
 from contextlib import asynccontextmanager
 
+from dotenv import load_dotenv
+load_dotenv()
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import joblib
@@ -29,6 +32,12 @@ async def lifespan(app: FastAPI):
     app.state.clinical_scaler, app.state.sdoh_scaler, \
         app.state.community_encoder, app.state.feature_columns = load_artifacts()
     app.state.explainer = build_explainer(app.state.model)
+
+    openai_key = os.getenv("OPENAI_API_KEY", "").strip()
+    if openai_key:
+        print("[startup] OPENAI_API_KEY detected — AI-powered recommendations enabled")
+    else:
+        print("[startup] OPENAI_API_KEY not set — rule-based fallback will be used")
 
     print("[startup] Model and artifacts loaded successfully")
     yield

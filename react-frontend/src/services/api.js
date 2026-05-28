@@ -33,8 +33,17 @@ export const getPatients = (page = 0) => api.get(`/api/patients?page=${page}`)
 export const getPatient = (id) => api.get(`/api/patients/${id}`)
 export const updatePatient = (id, data) => api.put(`/api/patients/${id}`, data)
 export const deletePatient = (id) => api.delete(`/api/patients/${id}`)
-export const predict = (patientId, features) =>
-  api.post('/api/predict', { patientId, ...features })
+export const predict = (patientId) =>
+  api.post('/api/predict', { patientId })
 export const getHistory = (page = 0) => api.get(`/api/history?page=${page}`)
 export const getPatientHistory = (patientId) =>
   api.get(`/api/history/${patientId}`)
+export const getMyHistory = () => api.get('/api/history/me')
+export const getMyPatientRecord = () => api.get('/api/patients/me')
+export const getMlStatus = () => api.get('/api/ml-status')
+
+export const createDoctor = (data) => api.post('/api/admin/doctors', data)
+export const getDoctors = () => api.get('/api/admin/doctors')
+export const getAllUsers = () => api.get('/api/admin/users')
+export const deleteUser = (id) => api.delete(`/api/admin/users/${id}`)
+export const getUserByUsername = (username) => api.get(`/api/admin/users/by-username/${username}`)

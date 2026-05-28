@@ -6,12 +6,12 @@ function formatDate(ts) {
   return new Date(ts).toLocaleString()
 }
 
-export default function HistoryTable({ predictions, totalPages, currentPage, onPageChange }) {
+export default function HistoryTable({ predictions, totalPages, currentPage, onPageChange, patientsMap = {} }) {
   const [expandedId, setExpandedId] = useState(null)
 
   return (
-    <div className="history-table-wrapper card">
-      <div className="card-title">Prediction History</div>
+    <div className="history-table-wrapper patients-card">
+      <div className="card-title" style={{ fontSize: '1.25rem', marginBottom: '24px', fontWeight: 800 }}>Dataset Timeline</div>
 
       {predictions.length === 0 ? (
         <div className="loading">No predictions found.</div>
@@ -22,7 +22,7 @@ export default function HistoryTable({ predictions, totalPages, currentPage, onP
               <thead>
                 <tr>
                   <th>Timestamp</th>
-                  <th>Patient ID</th>
+                  <th>Patient</th>
                   <th>Score</th>
                   <th>Status</th>
                   <th>Probability</th>
@@ -34,7 +34,12 @@ export default function HistoryTable({ predictions, totalPages, currentPage, onP
                   <>
                     <tr key={p.id || p._id} className="history-row">
                       <td>{formatDate(p.timestamp)}</td>
-                      <td className="patient-id-cell">{p.patientId}</td>
+                      <td className="patient-id-cell">
+                        {patientsMap[p.patientId] && (
+                          <div className="patient-name-cell">{patientsMap[p.patientId]}</div>
+                        )}
+                        <div className="patient-id-mono">{p.patientId}</div>
+                      </td>
                       <td>
                         <span className="score-pill" data-score={p.frailtyScore}>
                           {p.frailtyScore}/5
