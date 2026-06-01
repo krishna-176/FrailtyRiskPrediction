@@ -3,7 +3,7 @@ spring:
     name: frailty-backend
   data:
     mongodb:
-      uri: ${MONGODB_URI:mongodb+srv://krishnakumar176003_db_user:***REMOVED***@krishna.4r6mwfw.mongodb.net/frailtydb?appName=Krishna&retryWrites=true&w=majority}
+      uri: ${MONGODB_URI}
 ml:
   service:
     url: ${ML_SERVICE_URL:http://localhost:8000}
